@@ -4,7 +4,76 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Quote Generator</title>
-<link rel="stylesheet" href="css/style.css">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #1d2671, #c33764);
+    color: white;
+}
+
+.container {
+    background: rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 600px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+select {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+.quote-box {
+    padding: 20px;
+    margin: 20px 0;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    font-size: 20px;
+    min-height: 60px;
+}
+
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: black;
+    color: white;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background: rgba(255,255,255,0.15);
+    margin: 5px;
+    padding: 8px;
+    border-radius: 6px;
+}
+</style>
+
 </head>
 
 <body>
@@ -20,7 +89,7 @@
     </select>
 
     <div class="quote-box">
-        <p id="quote">Click the button to generate a quote!</p>
+        <p id="quote">Click Generate Quote</p>
     </div>
 
     <button onclick="generateQuote()">Generate Quote</button>
@@ -30,7 +99,66 @@
     <ul id="savedQuotes"></ul>
 </div>
 
-<script src="js/script.js"></script>
+<script>
+const quotes = {
+    motivation: [
+        "Push yourself, because no one else will.",
+        "Stay strong and keep going.",
+        "Dream big and work hard.",
+        "Discipline creates success."
+    ],
+    success: [
+        "Success takes time.",
+        "Hard work beats talent.",
+        "Never quit.",
+        "Stay consistent."
+    ],
+    love: [
+        "Love makes life beautiful.",
+        "True love never fades.",
+        "Love brings happiness.",
+        "Love is powerful."
+    ],
+    study: [
+        "Study now, shine later.",
+        "Knowledge is power.",
+        "Focus on your goals.",
+        "Learning never stops."
+    ]
+};
+
+function generateQuote() {
+    let category = document.getElementById("category").value;
+    let randomIndex = Math.floor(Math.random() * quotes[category].length);
+    let randomQuote = quotes[category][randomIndex];
+    document.getElementById("quote").innerText = randomQuote;
+}
+
+function saveQuote() {
+    let quote = document.getElementById("quote").innerText;
+
+    let saved = JSON.parse(localStorage.getItem("quotes")) || [];
+    saved.push(quote);
+
+    localStorage.setItem("quotes", JSON.stringify(saved));
+    displayQuotes();
+}
+
+function displayQuotes() {
+    let saved = JSON.parse(localStorage.getItem("quotes")) || [];
+    let list = document.getElementById("savedQuotes");
+    list.innerHTML = "";
+
+    saved.forEach(function(q) {
+        let li = document.createElement("li");
+        li.innerText = q;
+        list.appendChild(li);
+    });
+}
+
+displayQuotes();
+</script>
 
 </body>
 </html>
+ 
